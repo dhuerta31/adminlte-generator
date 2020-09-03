@@ -150,32 +150,41 @@ class HomeController extends Controller{
 
         $pdocrud->addChart("chart2", "google-chart", "SELECT data.date, data.id_data,  data.value FROM data", "id_company", "total", "sql", array("title" => "Valores uf","width"=>"100%", "height"=>"500","google-chart-type"=>"BarChart"));
 
-        $insertEmpData[0]["date"] = $value['serie'][0]['fecha'];
-        $insertEmpData[0]["value"] = $value['serie'][0]['valor'];
-        $insertEmpData[1]["date"] = $value['serie'][1]['fecha'];
-        $insertEmpData[1]["value"] = $value['serie'][1]['valor'];
-        $insertEmpData[2]["date"] = $value['serie'][2]['fecha'];
-        $insertEmpData[2]["value"] = $value['serie'][2]['valor'];
-        $insertEmpData[3]["date"] = $value['serie'][3]['fecha'];
-        $insertEmpData[3]["value"] = $value['serie'][3]['valor'];
-        $insertEmpData[4]["date"] = $value['serie'][4]['fecha'];
-        $insertEmpData[4]["value"] = $value['serie'][4]['valor'];
-        $insertEmpData[5]["date"] = $value['serie'][5]['fecha'];
-        $insertEmpData[5]["value"] = $value['serie'][5]['valor'];
-        $insertEmpData[6]["date"] = $value['serie'][6]['fecha'];
-        $insertEmpData[6]["value"] = $value['serie'][6]['valor'];
-        $insertEmpData[7]["date"] = $value['serie'][7]['fecha'];
-        $insertEmpData[7]["value"] = $value['serie'][7]['valor'];
-        $insertEmpData[8]["date"] = $value['serie'][8]['fecha'];
-        $insertEmpData[8]["value"] = $value['serie'][8]['valor'];
-        $insertEmpData[9]["date"] = $value['serie'][9]['fecha'];
-        $insertEmpData[9]["value"] = $value['serie'][9]['valor'];
-        $insertEmpData[10]["date"] = $value['serie'][10]['fecha'];
-        $insertEmpData[10]["value"] = $value['serie'][10]['valor'];
+        $obtener = $pdomodel->select("data");
 
+        foreach($obtener as $resultados) {
+        }
 
-        $pdomodel->insertBatch("data", $insertEmpData);
-
+        if(empty($resultados['id_data'])) {
+            $insertEmpData[0]["date"] = $value['serie'][0]['fecha'];
+            $insertEmpData[0]["value"] = $value['serie'][0]['valor'];
+            $insertEmpData[1]["date"] = $value['serie'][1]['fecha'];
+            $insertEmpData[1]["value"] = $value['serie'][1]['valor'];
+            $insertEmpData[2]["date"] = $value['serie'][2]['fecha'];
+            $insertEmpData[2]["value"] = $value['serie'][2]['valor'];
+            $insertEmpData[3]["date"] = $value['serie'][3]['fecha'];
+            $insertEmpData[3]["value"] = $value['serie'][3]['valor'];
+            $insertEmpData[4]["date"] = $value['serie'][4]['fecha'];
+            $insertEmpData[4]["value"] = $value['serie'][4]['valor'];
+            $insertEmpData[5]["date"] = $value['serie'][5]['fecha'];
+            $insertEmpData[5]["value"] = $value['serie'][5]['valor'];
+            $insertEmpData[6]["date"] = $value['serie'][6]['fecha'];
+            $insertEmpData[6]["value"] = $value['serie'][6]['valor'];
+            $insertEmpData[7]["date"] = $value['serie'][7]['fecha'];
+            $insertEmpData[7]["value"] = $value['serie'][7]['valor'];
+            $insertEmpData[8]["date"] = $value['serie'][8]['fecha'];
+            $insertEmpData[8]["value"] = $value['serie'][8]['valor'];
+            $insertEmpData[9]["date"] = $value['serie'][9]['fecha'];
+            $insertEmpData[9]["value"] = $value['serie'][9]['valor'];
+            $insertEmpData[10]["date"] = $value['serie'][10]['fecha'];
+            $insertEmpData[10]["value"] = $value['serie'][10]['valor'];
+    
+            $pdomodel->insertBatch("data", $insertEmpData);
+        } else {
+            
+        }
+        
+      
         $pdocrud->formDisplayInPopup();
         $pdocrud->addFilter("DateFilter", "Filtrar por fecha", "date", "dropdown");
         $pdocrud->setFilterSource("DateFilter", "data", "date", "date as pl", "db");
