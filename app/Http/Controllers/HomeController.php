@@ -27,6 +27,11 @@ class HomeController extends Controller{
     }
     public function profile(){
         $pdocrud = new_PDOCrud();
+        $pdocrud->addPlugin("bootstrap-pwstrength");
+        $params["ui"] = array("showProgressBar"=> "true");
+        $params["common"] = array("showVerdictsInsideProgressBar"=> "true");
+        $params["rules"] = array("wordRepetitions"=> "true");
+
         $pdocrud->setSettings("showUploadedImage", false);
         $urls[] = array("url"=>"#profile","text" => "Perfil", "icon" =>"fa fa-user", "data"=>"", "attr" =>array("data-profile"=>"user_id"),"class" => array("parent-sidebar"));
         $urls[] = array("url"=>"#recent-activity","text" => "Actividad Reciente", "icon" =>"fa fa-history", "data"=>"12/12/2017", "attr" =>array(),"class" => array("parent-sidebar"));
@@ -145,17 +150,16 @@ class HomeController extends Controller{
 
         //print_r($value);
 
-        $pdocrud = new_PDOCrud();
+        $pdocrud = new_PDOCrud(false, "", "", array("quickView" => true));
         $pdomodel = $pdocrud->getPDOModelObj();
-
-        $pdocrud->addChart("chart2", "google-chart", "SELECT data.date, data.id_data,  data.value FROM data", "id_company", "total", "sql", array("title" => "Valores uf","width"=>"100%", "height"=>"500","google-chart-type"=>"BarChart"));
 
         $obtener = $pdomodel->select("data");
 
         foreach($obtener as $resultados) {
         }
+        
 
-        if(empty($resultados['id_data'])) {
+        if(!isset($resultados['date']) || !isset($resultados['value'])) {
             $insertEmpData[0]["date"] = $value['serie'][0]['fecha'];
             $insertEmpData[0]["value"] = $value['serie'][0]['valor'];
             $insertEmpData[1]["date"] = $value['serie'][1]['fecha'];
@@ -180,11 +184,27 @@ class HomeController extends Controller{
             $insertEmpData[10]["value"] = $value['serie'][10]['valor'];
     
             $pdomodel->insertBatch("data", $insertEmpData);
+
+            echo '
+      <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+      <script>
+     jQuery(function(){
+            swal({type: "success",
+                title: "Éxito!",
+                icon: "success",
+                button: "aceptar!",
+                text: "Se ha poblado la tabla"
+            }).then(function() {
+                window.location = "valor_uf";
+            });
+        });
+      </script>';
+
         } else {
             
         }
         
-      
         $pdocrud->formDisplayInPopup();
         $pdocrud->addFilter("DateFilter", "Filtrar por fecha", "date", "dropdown");
         $pdocrud->setFilterSource("DateFilter", "data", "date", "date as pl", "db");
@@ -196,6 +216,8 @@ class HomeController extends Controller{
         $pdocrud->viewColFormatting("date", "date",array("format" =>"d-m-Y"));
         $pdocrud->setSettings("clonebtn", true);
         $pdocrud->dbTable("data");
+        $pdocrud->addChart("chart2", "google-chart", "SELECT data.date, data.date,  data.value FROM data", "id_company", "total", "sql", array("title" => "Valores uf","width"=>"100%", "height"=>"500","google-chart-type"=>"BarChart"));
+        $pdocrud->recordsPerPage(11); 
 
         return view('valor_uf',[
             'pdocrud'=> $pdocrud,

@@ -12,6 +12,7 @@
               </div>
               <div class="box-body">
                 <?=$pdocrud->render("EDITFORM", array("id"=>Auth::user()->id));?>  
+             <?=$pdocrud->loadPluginJsCode("bootstrap-pwstrength",".password",$params);?>
               </div>
             </div>
           </section>

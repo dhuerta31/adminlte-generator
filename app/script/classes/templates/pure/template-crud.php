@@ -72,9 +72,9 @@
             <div class="row" style="padding-bottom: 5px">
                 <?php foreach($extraData["dateRangeReport"] as $key => $dateRange ) {?>
                         <div class="col-md-2 col-lg-2">
-                            <a title="<?php echo $dateRange["text"]; ?>" class="pdocrud-actions pdocrud-button  btn btn-success pdocrud-date-range-report"
+                            <a title="<?php echo $dateRange["text"]; ?>" class="pdocrud-actions pdocrud-button btn-sm btn btn-primary pdocrud-date-range-report"
                                href="javascript:;" data-action="date_range_report" data-action-id="<?php echo $key;?>" data-obj-key="<?php echo $objKey; ?>">
-                                <?php echo $dateRange["text"];?>
+                                <i class="fa fa-calendar"></i> <?php echo $dateRange["text"];?>
                             </a>
                         </div>
                 <?php 
