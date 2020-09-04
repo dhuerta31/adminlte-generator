@@ -27,6 +27,12 @@
     @yield('css')
 </head>
 
+<style>
+    body {
+        padding-right: 0px!important;
+    }
+</style>
+
 <body class="skin-blue sidebar-mini">
 @if (!Auth::guest())
     <div class="wrapper">
